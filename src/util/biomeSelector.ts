@@ -2,7 +2,7 @@ import {NUM_ROWS} from "@/configs/mapConfig";
 import { createNoise2D } from "simplex-noise";
 import alea from "alea";
 
-const NOISE_2D = createNoise2D();
+const NOISE_2D = createNoise2D(alea(Math.random()));
 
 class Biome {
 
@@ -32,14 +32,26 @@ class NoiseLayer {
 }
 
 export const Biomes = {
+    PLAINS: new Biome("plains", "bg-green-300"),
     FORREST: new Biome("forest", "bg-green-600"),
     OCEAN: new Biome("ocean", "bg-blue-300"),
+    MOUNTAIN: new Biome("mountain", "bg-gray-300"),
+    DESERT: new Biome("desert", "bg-yellow-500"),
+    MESA: new Biome("mesa", "bg-yellow-700"),
+}
+
+function getDistanceFromCenter(useRadial: boolean, coordinate1: { x: number, y: number }, coordinate2: { x: number, y: number }): number {
+    if (useRadial) {
+        return Math.sqrt(Math.pow(coordinate1.x - coordinate2.x, 2) + Math.pow(coordinate1.y - coordinate2.y, 2))
+    } else {
+        return Math.max(Math.abs(coordinate1.x - coordinate2.x), Math.abs(coordinate1.y - coordinate2.y));
+    }
 }
 
 export function getHeightmap(coordinates: { x: number; y: number; }): number {
 
     const center = { x: NUM_ROWS / 2, y: NUM_ROWS / 2}
-    const distFromCenter = Math.sqrt(Math.pow(coordinates.x - center.x, 2) + Math.pow(coordinates.y - center.y, 2));
+    const distFromCenter = getDistanceFromCenter(false, coordinates, center);
 
     const noiseLayer1 = new NoiseLayer(3, 25);
     const noiseLayer2 = new NoiseLayer(9, 12);
@@ -56,6 +68,44 @@ export function getHeightmap(coordinates: { x: number; y: number; }): number {
     return totalNoise * distanceMultiplier;
 }
 
+export function getTemperature(coordinates: { x: number; y: number; }): number {
+    const noiseScale = 10
+    return NOISE_2D(coordinates.x / noiseScale, coordinates.y / noiseScale);
+}
+
+export function getFertility(coordinates: { x: number; y: number; }): number {
+    const noiseScale = 5
+    return NOISE_2D(coordinates.x / noiseScale, coordinates.y / noiseScale);
+}
+
+export function getMountainShape(coordinates: { x: number; y: number; }): number {
+
+    const noiseScale = 1;
+    const ridgeness = 1.07;
+    const noise = NOISE_2D(coordinates.x / noiseScale, coordinates.y / noiseScale)
+    return Math.pow(noise, ridgeness);
+
+}
+
 export function getBiome(coordinates: { x: number; y: number; }): Biome {
-    return getHeightmap(coordinates) > 0.00003 ? Biomes.FORREST : Biomes.OCEAN;
+
+    const oceanCutoff = 0.00003; //Higher means more oceans
+    const mountainCutoff = 0.0009; //Higher means fewer mountains
+    const desertCutoff = 0.6; //Higher means fewer deserts
+    const forestCutoff = 0.2; //Higher means more forests
+
+    const heightmap = getHeightmap(coordinates);
+    const temperature = getTemperature(coordinates);
+    const fertility = getFertility(coordinates);
+    const mountainShape = getMountainShape(coordinates);
+
+    if (heightmap < oceanCutoff) return Biomes.OCEAN;
+    if (temperature < desertCutoff) {
+        if (heightmap > mountainCutoff && mountainShape > 0) return Biomes.MOUNTAIN;
+        if (fertility < forestCutoff) return Biomes.FORREST;
+        return Biomes.PLAINS
+    } else {
+        if (heightmap > mountainCutoff && mountainShape > 0) return  Biomes.MESA;
+        return  Biomes.DESERT;
+    }
 }
