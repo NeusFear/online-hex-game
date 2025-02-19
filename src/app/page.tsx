@@ -43,7 +43,7 @@ export default function Home() {
                                  topOffset={topOffset}
                                  bottomMargin={bottomMargin}
                                  coordinates={{
-                                     x: i % numRows,
+                                     x: (i % numRows) / 2,
                                      y: Math.round(i / (numRows * 2) - 0.5) * 2 + (i % 2 == 0 ? 1 : 0),
                             }}
                             />
