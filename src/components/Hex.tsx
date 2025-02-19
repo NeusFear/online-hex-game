@@ -1,24 +1,30 @@
-import {getBiome} from "@/util/biomeSelector";
+import {HexInfo} from "@/util/hexInfo";
 
-export default function Hex({ number, width, height, topOffset, bottomMargin, coordinates }:
+export default function Hex({ hexInfo, width, height, topOffset, bottomMargin, handleSelection }:
                             {
-                                number: number,
+                                hexInfo: HexInfo;
                                 width: number,
                                 height: number,
                                 topOffset: number,
                                 bottomMargin: number,
-                                coordinates: {x: number, y: number}
+                                handleSelection: (hexInfo: HexInfo) => void,
                             }) {
-
-    const biome = getBiome(coordinates)
 
     return (
         <div
-            className={biome.color + " hexagon relative transform hover:bg-amber-400 flex flex-col content-center justify-center items-center text-black text-[5px]"}
-            style={{width: width, height: height, top: number % 2 == 0 ? 0 : topOffset, marginBottom: bottomMargin}}
+            className={hexInfo.biome.color + " hexagon relative transform hover:opacity-75 flex flex-col content-center justify-center items-center text-black text-[5px]"}
+            style={{
+                width: width,
+                height: height,
+                top: hexInfo.number % 2 == 0 ? 0 : topOffset,
+                marginBottom: bottomMargin,
+                background: "url(" + hexInfo.biome.background +")",
+                backgroundPosition: "50% 50%",
+                backgroundSize: "102%",
+            }}
+            onClick={() => {handleSelection(hexInfo)}}
         >
-            <p>{biome.name}</p>
-            <p>{"[" + coordinates.x + ", " + coordinates.y + "]"}</p>
+            <p>{hexInfo.biome.name}</p>
         </div>
     )
 }

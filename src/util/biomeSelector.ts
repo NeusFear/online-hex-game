@@ -1,19 +1,9 @@
 import {NUM_ROWS} from "@/configs/mapConfig";
 import { createNoise2D } from "simplex-noise";
 import alea from "alea";
+import {Biome, Biomes} from "@/configs/biomeConfigs";
 
 const NOISE_2D = createNoise2D(alea(Math.random()));
-
-class Biome {
-
-    name: string;
-    color: string;
-
-    constructor(name: string, color: string) {
-        this.name = name;
-        this.color = color;
-    }
-}
 
 class NoiseLayer {
 
@@ -29,15 +19,6 @@ class NoiseLayer {
         return this.influence * NOISE_2D(x / this.scale, y / this.scale);
     }
 
-}
-
-export const Biomes = {
-    PLAINS: new Biome("plains", "bg-green-300"),
-    FORREST: new Biome("forest", "bg-green-600"),
-    OCEAN: new Biome("ocean", "bg-blue-300"),
-    MOUNTAIN: new Biome("mountain", "bg-gray-300"),
-    DESERT: new Biome("desert", "bg-yellow-500"),
-    MESA: new Biome("mesa", "bg-yellow-700"),
 }
 
 function getDistanceFromCenter(useRadial: boolean, coordinate1: { x: number, y: number }, coordinate2: { x: number, y: number }): number {
@@ -83,8 +64,8 @@ export function getMountainShape(coordinates: { x: number; y: number; }): number
     const noiseScale = 1;
     const ridgeness = 1.07;
     const noise = NOISE_2D(coordinates.x / noiseScale, coordinates.y / noiseScale)
-    return Math.pow(noise, ridgeness);
 
+    return Math.pow(noise, ridgeness);
 }
 
 export function getBiome(coordinates: { x: number; y: number; }): Biome {
