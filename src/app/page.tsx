@@ -37,7 +37,16 @@ export default function Home() {
                              paddingBottom: padding,
                          }}>
                         {Array.from({ length: numHexes }).map((_, i) => (
-                            <Hex key={i} number={i + 1} width={width} height={height} topOffset={topOffset} bottomMargin={bottomMargin} />
+                            <Hex key={i} number={i + 1}
+                                 width={width}
+                                 height={height}
+                                 topOffset={topOffset}
+                                 bottomMargin={bottomMargin}
+                                 coordinates={{
+                                     x: i % numRows,
+                                     y: Math.round(i / (numRows * 2) - 0.5) * 2 + (i % 2 == 0 ? 1 : 0),
+                            }}
+                            />
                         ))}
                     </div>
                 </TransformComponent>
@@ -46,13 +55,22 @@ export default function Home() {
     );
 }
 
-function Hex({ number, width, height, topOffset, bottomMargin }: {number: number, width: number, height: number, topOffset: number, bottomMargin: number}) {
+function Hex({ number, width, height, topOffset, bottomMargin, coordinates }:
+             {
+                 number: number,
+                 width: number,
+                 height: number,
+                 topOffset: number,
+                 bottomMargin: number,
+                 coordinates: {x: number, y: number}
+             }) {
   return (
       <div
-          className={"hexagon bg-white relative transform hover:bg-amber-400 flex flex-row content-center justify-center items-center text-black text-[5px]"}
+          className={"hexagon bg-white relative transform hover:bg-amber-400 flex flex-col content-center justify-center items-center text-black text-[5px]"}
           style={{width: width, height: height, top: number % 2 == 0 ? 0 : topOffset, marginBottom: bottomMargin}}
       >
-          {number}
+          <p>{number}</p>
+          <p>{"[" + coordinates.x + ", " + coordinates.y + "]"}</p>
       </div>
   )
 }
