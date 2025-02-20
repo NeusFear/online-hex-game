@@ -28,6 +28,7 @@ export const ResourceTypes = {
     STONE: new ResourceType("stone"),
     IRON: new ResourceType("iron"),
     TRASH: new ResourceType("trash"),
+    FISH: new ResourceType("fish"),
 }
 
 export class Biome {
@@ -67,6 +68,7 @@ export const Biomes = {
     ])),
     OCEAN: new Biome("ocean", "bg-blue-300", "", new Map<ResourceType, number>([
         [ResourceTypes.TRASH, 0.025],
+        [ResourceTypes.FISH, 0.1],
     ])),
     MOUNTAIN: new Biome("mountain", "bg-gray-300", "terrain_tiles/stone.png", new Map<ResourceType, number>([
         [ResourceTypes.STONE, 1],

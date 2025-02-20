@@ -62,7 +62,7 @@ export function getFertility(coordinates: { x: number; y: number; }): number {
 export function getMountainShape(coordinates: { x: number; y: number; }): number {
 
     const noiseScale = 1;
-    const ridgeness = 1.07;
+    const ridgeness = 1.09;
     const noise = NOISE_2D(coordinates.x / noiseScale, coordinates.y / noiseScale)
 
     return Math.pow(noise, ridgeness);
@@ -71,7 +71,7 @@ export function getMountainShape(coordinates: { x: number; y: number; }): number
 export function getBiome(coordinates: { x: number; y: number; }): Biome {
 
     const oceanCutoff = 0.00003; //Higher means more oceans
-    const mountainCutoff = 0.0009; //Higher means fewer mountains
+    const mountainCutoff = 0.003; //Higher means fewer mountains
     const desertCutoff = 0.6; //Higher means fewer deserts
     const forestCutoff = 0.2; //Higher means more forests
 
