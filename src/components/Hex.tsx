@@ -1,4 +1,5 @@
 import {HexInfo} from "@/util/hexInfo";
+import {ResourceTypes} from "@/configs/biomeConfigs";
 
 export default function Hex({ hexInfo, width, height, topOffset, bottomMargin, handleSelection }:
                             {
@@ -25,6 +26,7 @@ export default function Hex({ hexInfo, width, height, topOffset, bottomMargin, h
             onClick={() => {handleSelection(hexInfo)}}
         >
             <p>{hexInfo.biome.name}</p>
+            {hexInfo.resource.type != ResourceTypes.NONE && <p className="text-yellow-300 font-bold bg-black px-2 rounded-sm">{hexInfo.resource.type.name}: {hexInfo.resource.quality}</p>}
         </div>
     )
 }

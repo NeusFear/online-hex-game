@@ -13,6 +13,7 @@ export default function TileInfo({selectedHex}: {selectedHex: HexInfo}) {
             <div className={"absolute z-50 bg-gray-100 shadow-2xl top-0 left-0 px-6 py-3 rounded-lg m-2 flex flex-col"}>
                 <p>Hex Coordinate: [{selectedHex.coordinates.x}, {selectedHex.coordinates.y}]</p>
                 <p className={"capitalize"}>Biome: {selectedHex.biome.name}</p>
+                <p className={"capitalize"}>Resources: {selectedHex.resource.type.name}</p>
             </div>
         )
     }

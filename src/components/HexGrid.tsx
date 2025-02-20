@@ -1,8 +1,11 @@
 import Hex from "@/components/Hex";
-import {NUM_HEXES, NUM_ROWS, PADDING} from "@/configs/mapConfig";
+import {NUM_ROWS, PADDING} from "@/configs/mapConfig";
 import {HexInfo} from "@/util/hexInfo";
 
-export default function HexGrid({handleSelection}: {handleSelection: (hex: HexInfo) => void}) {
+export default function HexGrid({hexes, handleSelection}: {
+    hexes: HexInfo[],
+    handleSelection: (hex: HexInfo) => void
+}) {
 
     //Hexagon Magic Numbers
     const width = 90;
@@ -20,22 +23,7 @@ export default function HexGrid({handleSelection}: {handleSelection: (hex: HexIn
                  paddingTop: PADDING,
                  paddingBottom: PADDING,
              }}>
-            {Array.from({ length: NUM_HEXES }).map((_, i) => (
-                <Hex key={i}
-                     hexInfo={new HexInfo(
-                         i + 1,
-                         {
-                             x: (i % (NUM_ROWS * 2)) / 2,
-                             y: Math.round(i / (NUM_ROWS * 2) - 0.5) * 2 + (i % 2 == 0 ? 1 : 0)
-                         }
-                         )}
-                     width={width}
-                     height={height}
-                     topOffset={topOffset}
-                     bottomMargin={bottomMargin}
-                     handleSelection={handleSelection}
-                />
-            ))}
+            {hexes.map((hex, i) => <Hex key={i} hexInfo={hex} width={width} height={height} topOffset={topOffset} bottomMargin={bottomMargin} handleSelection={handleSelection} />)}
         </div>
     );
 }
