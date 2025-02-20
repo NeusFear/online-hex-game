@@ -80,7 +80,7 @@ export const Biomes = {
         [ResourceTypes.CACTI, 0.1]
     ])),
     MESA: new Biome("mesa", "bg-yellow-700", "terrain_tiles/mesa.png", new Map<ResourceType, number>([
-        [ResourceTypes.STONE, 0.1],
+        [ResourceTypes.STONE, 1],
         [ResourceTypes.IRON, 0.3],
     ])),
 }
