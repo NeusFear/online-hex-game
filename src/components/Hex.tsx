@@ -1,4 +1,5 @@
 import {HexInfo} from "@/util/hexInfo";
+import {ResourceTypes} from "@/configs/biomeConfigs";
 
 export default function Hex({ hexInfo, width, height, topOffset, bottomMargin, handleSelection }:
                             {
@@ -45,7 +46,7 @@ function HexLabel({hexInfo}: {hexInfo: HexInfo}) {
     return (
         <div className={"relative top-0 left-0 w-full h-full flex flex-col content-center justify-center items-center text-black text-[5px] z-50"}>
             <p>{hexInfo.biome.name}</p>
-            <p>{hexInfo.resource.type.name} ({hexInfo.resource.quality})</p>
+            <p>{hexInfo.resource.type.name} {hexInfo.resource.type != ResourceTypes.NONE && "(" + hexInfo.resource.quality + ")"}</p>
         </div>
     )
 }
