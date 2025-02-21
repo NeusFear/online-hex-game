@@ -29,10 +29,18 @@ export default function Hex({ hexInfo, width, height, topOffset, bottomMargin, h
 }
 
 function HexResource({hexInfo}: {hexInfo: HexInfo}) {
+
+    const hasBackground = hexInfo.resource.type != ResourceTypes.NONE;
+
     return(
         <div className={"relative top-0 left-0 w-full h-full bg-red-900 items-center justify-center flex"}
-             style={{
+             style={hasBackground ? {
                  background: "url(resource_tiles/" + hexInfo.resource.type.name + "_" + hexInfo.resource.quality +".png)",
+                 backgroundPosition: "50% 50%",
+                 backgroundSize: "80%",
+                 backgroundRepeat: "no-repeat",
+             } : {
+                 background: "transparent",
                  backgroundPosition: "50% 50%",
                  backgroundSize: "80%",
                  backgroundRepeat: "no-repeat",
