@@ -11,9 +11,11 @@ export async function POST(req: Request) {
 
         await clientPromise.connect();
         const db = clientPromise.db('hexgame');
-        const result = await db.dropCollection(usersCollectionName);
+        const activeGamesCollection = db.collection("activeGames");
+        const result1 = await activeGamesCollection.findOneAndDelete({ gameID: gameUUID });
+        const result2 = await db.dropCollection(usersCollectionName);
 
-        return NextResponse.json({ message: 'Document added successfully', result });
+        return NextResponse.json({ message: 'Document added successfully', result1, result2 });
     } catch (error) {
         console.error('Error inserting document:', error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

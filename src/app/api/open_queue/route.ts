@@ -35,16 +35,13 @@ export async function POST(req: Request) {
         //Create this game
         const userCollectionName = `users-${gameUUID}`;
         await db.createCollection(userCollectionName);
-        const collection = db.collection(userCollectionName);
+        const userCollection = db.collection(userCollectionName);
+        const activeGamesCollection = db.collection("activeGames");
+        const gameInfo = new GameInfo(gameUUID, gameJoinCode)
+        const result1 = await activeGamesCollection.insertOne(gameInfo);
+        const result2 = await userCollection.insertOne(host);
 
-        // Add the game info as the first document in the user collection then add the first user (the host)
-        const docs = [
-            new GameInfo(gameJoinCode),
-            host,
-        ]
-        const result = await collection.insertMany(docs);
-
-        return NextResponse.json({ message: 'Document added successfully', gameJoinCode, result });
+        return NextResponse.json({ message: 'Document added successfully', gameJoinCode, result1, result2 });
     } catch (error) {
         console.error('Error inserting document:', error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
