@@ -1,5 +1,5 @@
-import {HexInfo} from "@/util/hexInfo";
-import {ResourceTypes} from "@/configs/biomeConfigs";
+import {HexInfo} from "@/app/data/hexInfo";
+import {ResourceTypes} from "@/configs/resourceConfigs";
 
 export default function TileInfo({selectedHex}: {selectedHex: HexInfo}) {
 

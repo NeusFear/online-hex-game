@@ -1,9 +1,7 @@
 import {NUM_ROWS} from "@/configs/mapConfig";
-import { createNoise2D } from "simplex-noise";
-import alea from "alea";
-import {Biome, Biomes} from "@/configs/biomeConfigs";
-
-const NOISE_2D = createNoise2D(alea(Math.random()));
+import {BiomeTypes} from "@/configs/biomeConfigs";
+import {Biome} from "@/app/data/biome";
+import {NoiseFunction2D} from "simplex-noise";
 
 class NoiseLayer {
 
@@ -15,8 +13,8 @@ class NoiseLayer {
         this.scale = scale;
     }
 
-    getNoise2D({x, y}: {x: number, y: number}) {
-        return this.influence * NOISE_2D(x / this.scale, y / this.scale);
+    getNoise2D(noise: NoiseFunction2D, {x, y}: {x: number, y: number}) {
+        return this.influence * noise(x / this.scale, y / this.scale);
     }
 
 }
@@ -29,7 +27,7 @@ function getDistanceFromCenter(useRadial: boolean, coordinate1: { x: number, y: 
     }
 }
 
-export function getHeightmap(coordinates: { x: number; y: number; }): number {
+export function getHeightmap(noise: NoiseFunction2D, coordinates: { x: number; y: number; }): number {
 
     const center = { x: NUM_ROWS / 2, y: NUM_ROWS / 2}
     const distFromCenter = getDistanceFromCenter(false, coordinates, center);
@@ -39,9 +37,9 @@ export function getHeightmap(coordinates: { x: number; y: number; }): number {
     const noiseLayer3 = new NoiseLayer(1.5, 3);
 
     const totalNoise =
-        noiseLayer1.getNoise2D(coordinates) +
-        noiseLayer2.getNoise2D(coordinates) +
-        noiseLayer3.getNoise2D(coordinates);
+        noiseLayer1.getNoise2D(noise, coordinates) +
+        noiseLayer2.getNoise2D(noise, coordinates) +
+        noiseLayer3.getNoise2D(noise, coordinates);
 
     const distanceInfluence = 5
     const distanceMultiplier = 1 / Math.pow(distFromCenter, distanceInfluence);
@@ -49,44 +47,44 @@ export function getHeightmap(coordinates: { x: number; y: number; }): number {
     return totalNoise * distanceMultiplier;
 }
 
-export function getTemperature(coordinates: { x: number; y: number; }): number {
+export function getTemperature(noise: NoiseFunction2D, coordinates: { x: number; y: number; }): number {
     const noiseScale = 10
-    return NOISE_2D(coordinates.x / noiseScale, coordinates.y / noiseScale);
+    return noise(coordinates.x / noiseScale, coordinates.y / noiseScale);
 }
 
-export function getFertility(coordinates: { x: number; y: number; }): number {
+export function getFertility(noise: NoiseFunction2D, coordinates: { x: number; y: number; }): number {
     const noiseScale = 5
-    return NOISE_2D(coordinates.x / noiseScale, coordinates.y / noiseScale);
+    return noise(coordinates.x / noiseScale, coordinates.y / noiseScale);
 }
 
-export function getMountainShape(coordinates: { x: number; y: number; }): number {
+export function getMountainShape(noise: NoiseFunction2D, coordinates: { x: number; y: number; }): number {
 
     const noiseScale = 1;
     const ridgeness = 1.09;
-    const noise = NOISE_2D(coordinates.x / noiseScale, coordinates.y / noiseScale)
+    const height = noise(coordinates.x / noiseScale, coordinates.y / noiseScale)
 
-    return Math.pow(noise, ridgeness);
+    return Math.pow(height, ridgeness);
 }
 
-export function getBiome(coordinates: { x: number; y: number; }): Biome {
+export function getBiome(noise: NoiseFunction2D, coordinates: { x: number; y: number; }): Biome {
 
     const oceanCutoff = 0.00003; //Higher means more oceans
     const mountainCutoff = 0.003; //Higher means fewer mountains
     const desertCutoff = 0.6; //Higher means fewer deserts
     const forestCutoff = 0.2; //Higher means more forests
 
-    const heightmap = getHeightmap(coordinates);
-    const temperature = getTemperature(coordinates);
-    const fertility = getFertility(coordinates);
-    const mountainShape = getMountainShape(coordinates);
+    const heightmap = getHeightmap(noise, coordinates);
+    const temperature = getTemperature(noise, coordinates);
+    const fertility = getFertility(noise, coordinates);
+    const mountainShape = getMountainShape(noise, coordinates);
 
-    if (heightmap < oceanCutoff) return Biomes.OCEAN;
+    if (heightmap < oceanCutoff) return BiomeTypes.OCEAN;
     if (temperature < desertCutoff) {
-        if (heightmap > mountainCutoff && mountainShape > 0) return Biomes.MOUNTAIN;
-        if (fertility < forestCutoff) return Biomes.FORREST;
-        return Biomes.PLAINS
+        if (heightmap > mountainCutoff && mountainShape > 0) return BiomeTypes.MOUNTAIN;
+        if (fertility < forestCutoff) return BiomeTypes.FORREST;
+        return BiomeTypes.PLAINS
     } else {
-        if (heightmap > mountainCutoff && mountainShape > 0) return  Biomes.MESA;
-        return  Biomes.DESERT;
+        if (heightmap > mountainCutoff && mountainShape > 0) return  BiomeTypes.MESA;
+        return  BiomeTypes.DESERT;
     }
 }

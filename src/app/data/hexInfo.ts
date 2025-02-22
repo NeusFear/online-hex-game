@@ -1,5 +1,7 @@
 import {getBiome} from "@/util/biomeSelector";
-import {Biome, Resource} from "@/configs/biomeConfigs";
+import {Biome} from "@/app/data/biome";
+import {Resource} from "@/app/data/resource";
+import {NoiseFunction2D} from "simplex-noise";
 
 export class HexInfo {
 
@@ -8,10 +10,10 @@ export class HexInfo {
     biome: Biome;
     resource: Resource;
 
-    constructor(number: number, coordinates: { x: number; y: number }) {
+    constructor(number: number, coordinates: { x: number; y: number }, noiseFunction: NoiseFunction2D) {
         this.number = number;
         this.coordinates = coordinates;
-        this.biome = getBiome(coordinates);
+        this.biome = getBiome(noiseFunction, coordinates);
         this.resource = this.biome.getResource();
     }
 

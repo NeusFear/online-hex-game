@@ -1,4 +1,5 @@
-import {ResourceType, ResourceTypes} from "@/configs/biomeConfigs";
+import {ResourceTypes} from "@/configs/resourceConfigs";
+import {ResourceType} from "@/app/data/resourceType";
 
 export default function ResourcesInfo(
     {wood, stone, ironOre, crops, meat, planks, stoneBricks, ironIngots,
@@ -40,7 +41,7 @@ function ResourceIcon({resourceType}: {
     return(
         <div className={`${resourceType.uiColor} z-50 flex flex-col items-center justify-center w-12 h-12 rounded-full border-gray-800 border-2 mt-2`}>
             <div className={"w-full h-full"} style={{
-                background: "url(resource_icons/" + resourceType.resourceName + ".png)",
+                backgroundImage: "url(resource_icons/" + resourceType.resourceName + ".png)",
                 backgroundPosition: "50% 50%",
                 backgroundSize: "60%",
                 backgroundRepeat: "no-repeat",
