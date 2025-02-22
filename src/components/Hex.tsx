@@ -33,18 +33,13 @@ function HexResource({hexInfo}: {hexInfo: HexInfo}) {
     const hasBackground = hexInfo.resource.type != ResourceTypes.NONE;
 
     return(
-        <div className={"relative top-0 left-0 w-full h-full bg-red-900 items-center justify-center flex"}
+        <div className={"relative top-0 left-0 w-full h-full items-center justify-center flex"}
              style={hasBackground ? {
-                 background: "url(resource_tiles/" + hexInfo.resource.type.name + "_" + hexInfo.resource.quality +".png)",
+                 background: "url(resource_tiles/" + hexInfo.resource.type.tileName + "_" + hexInfo.resource.quality +".png)",
                  backgroundPosition: "50% 50%",
                  backgroundSize: "80%",
                  backgroundRepeat: "no-repeat",
-             } : {
-                 background: "transparent",
-                 backgroundPosition: "50% 50%",
-                 backgroundSize: "80%",
-                 backgroundRepeat: "no-repeat",
-             }}>
+             } : {}}>
             <HexLabel hexInfo={hexInfo} />
         </div>
     )
@@ -54,7 +49,7 @@ function HexLabel({hexInfo}: {hexInfo: HexInfo}) {
     return (
         <div className={"relative top-0 left-0 w-full h-full flex flex-col content-center justify-center items-center text-black text-[5px] z-50"}>
             <p>{hexInfo.biome.name}</p>
-            <p>{hexInfo.resource.type.name} {hexInfo.resource.type != ResourceTypes.NONE && "(" + hexInfo.resource.quality + ")"}</p>
+            <p>{hexInfo.resource.type.tileName} {hexInfo.resource.type != ResourceTypes.NONE && "(" + hexInfo.resource.quality + ")"}</p>
         </div>
     )
 }

@@ -9,10 +9,19 @@ export class Resource {
 }
 
 export class ResourceType {
-    name: string;
 
-    constructor(name: string) {
-        this.name = name;
+    tileName: string;
+    resourceName: string;
+    displayName: string;
+    uiColor: string;
+    isClearable: boolean;
+
+    constructor(tileName: string, resourceName: string, displayName: string, uiColor: string, isClearable: boolean) {
+        this.tileName = tileName;
+        this.resourceName = resourceName;
+        this.displayName = displayName;
+        this.uiColor = uiColor;
+        this.isClearable = isClearable;
     }
 
     createResource(): Resource {
@@ -22,13 +31,16 @@ export class ResourceType {
 }
 
 export const ResourceTypes = {
-    NONE: new ResourceType('none'),
-    LUMBER: new ResourceType("lumber"),
-    CACTI: new ResourceType("cacti"),
-    STONE: new ResourceType("stone"),
-    IRON: new ResourceType("iron"),
-    TRASH: new ResourceType("trash"),
-    FISH: new ResourceType("fish"),
+    NONE: new ResourceType('none', "", "None", "", false),
+    WOOD: new ResourceType("timber", "wood", "Wood", "bg-amber-400", true),
+    STONE: new ResourceType("stone", "stone", "Stone", "bg-stone-400", true),
+    IRON_ORE: new ResourceType("iron", "iron_ore", "Iron Ore", "bg-slate-400", true),
+    CROPS: new ResourceType("cacti", "crops", "Crops", "bg-lime-400", true),
+    MEAT: new ResourceType("fish", "meat", "Meat", "bg-cyan-400", true),
+    PLANKS: new ResourceType("planks", "planks", "Planks", "bg-amber-400", false),
+    STONE_BRICKS: new ResourceType("stone bricks", "stone_bricks", "Stone Bricks", "bg-stone-400", false),
+    IRON_INGOTS: new ResourceType("iron ingots", "iron_ingots", "Iron Ingots", "bg-zinc-400", false),
+    TRASH: new ResourceType("trash", "", "Trash", "bg-orange-400", true),
 }
 
 export class Biome {
@@ -60,27 +72,27 @@ export class Biome {
 export const Biomes = {
     PLAINS: new Biome("plains", "bg-green-300", "terrain_tiles/grass.png", new Map<ResourceType, number>([
         [ResourceTypes.STONE, 0.1],
-        [ResourceTypes.IRON, 0.1],
+        [ResourceTypes.IRON_ORE, 0.1],
         [ResourceTypes.TRASH, 0.025],
     ])),
     FORREST: new Biome("forest", "bg-green-600", "terrain_tiles/grass.png", new Map<ResourceType, number>([
-        [ResourceTypes.LUMBER, 1],
+        [ResourceTypes.WOOD, 1],
     ])),
     OCEAN: new Biome("ocean", "bg-blue-300", "", new Map<ResourceType, number>([
         [ResourceTypes.TRASH, 0.025],
-        [ResourceTypes.FISH, 0.1],
+        [ResourceTypes.MEAT, 0.1],
     ])),
     MOUNTAIN: new Biome("mountain", "bg-gray-300", "terrain_tiles/stone.png", new Map<ResourceType, number>([
         [ResourceTypes.STONE, 1],
-        [ResourceTypes.IRON, 0.1],
+        [ResourceTypes.IRON_ORE, 0.1],
     ])),
     DESERT: new Biome("desert", "bg-yellow-500", "terrain_tiles/sand.png", new Map<ResourceType, number>([
         [ResourceTypes.STONE, 0.1],
-        [ResourceTypes.IRON, 0.2],
-        [ResourceTypes.CACTI, 0.1]
+        [ResourceTypes.IRON_ORE, 0.2],
+        [ResourceTypes.CROPS, 0.1]
     ])),
     MESA: new Biome("mesa", "bg-yellow-700", "terrain_tiles/mesa.png", new Map<ResourceType, number>([
         [ResourceTypes.STONE, 1],
-        [ResourceTypes.IRON, 0.3],
+        [ResourceTypes.IRON_ORE, 0.3],
     ])),
 }

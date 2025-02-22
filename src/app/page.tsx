@@ -5,6 +5,7 @@ import TileInfo from "@/components/TileInfo";
 import {useEffect, useState} from "react";
 import {HexInfo} from "@/util/hexInfo";
 import {NUM_HEXES, NUM_ROWS} from "@/configs/mapConfig";
+import ResourcesInfo from "@/components/ResourcesInfo";
 
 export default function Home() {
 
@@ -15,6 +16,30 @@ export default function Home() {
     }
 
     const [hexes, setHexes] = useState<HexInfo[]>([])
+
+    const [woodResourceCount, setWoodResourceCount] = useState(10);
+    const [woodResourceCapacity, setWoodResourceCapacity] = useState(100);
+
+    const [stoneResourceCount, setStoneResourceCount] = useState(20);
+    const [stoneResourceCapacity, setStoneResourceCapacity] = useState(100);
+
+    const [ironOreResourceCount, setIronOreResourceCount] = useState(30);
+    const [ironOreResourceCapacity, setIronOreResourceCapacity] = useState(100);
+
+    const [cropsResourceCount, setCropsResourceCount] = useState(10);
+    const [cropsResourceCapacity, setCropsResourceCapacity] = useState(100);
+
+    const [meatResourceCount, setMeatResourceCount] = useState(20);
+    const [meatResourceCapacity, setMeatResourceCapacity] = useState(100);
+
+    const [planksResourceCount, setPlanksResourceCount] = useState(30);
+    const [planksResourceCapacity, setPlanksResourceCapacity] = useState(100);
+
+    const [stoneBricksResourceCount, setStoneBricksResourceCount] = useState(100);
+    const [stoneBricksResourceCapacity, setStoneBricksResourceCapacity] = useState(100);
+
+    const [ironIngotsResourceCount, setIronIngotsResourceCount] = useState(70);
+    const [ironIngotsResourceCapacity, setIronIngotsResourceCapacity] = useState(100);
 
     useEffect(() => {
         setHexes(Array.from({ length: NUM_HEXES })
@@ -47,6 +72,23 @@ export default function Home() {
                 </TransformComponent>
             </TransformWrapper>
             <TileInfo selectedHex={selectedHex} />
+            <ResourcesInfo
+                wood={woodResourceCount}
+                stone={stoneResourceCount}
+                ironOre={ironOreResourceCount}
+                crops={cropsResourceCount}
+                meat={meatResourceCount}
+                planks={planksResourceCount}
+                stoneBricks={stoneBricksResourceCount}
+                ironIngots={ironIngotsResourceCount}
+                woodMax={woodResourceCapacity}
+                stoneMax={stoneResourceCapacity}
+                ironOreMax={ironOreResourceCapacity}
+                cropsMax={cropsResourceCapacity}
+                meatMax={meatResourceCapacity}
+                planksMax={planksResourceCapacity}
+                stoneBricksMax={stoneBricksResourceCapacity}
+                ironIngotsMax={ironIngotsResourceCapacity} />
         </div>
     );
 }
