@@ -11,8 +11,11 @@ import {Mascots} from "@/configs/mascotConfigs";
 import {Mascot} from "../data/mascot";
 import {Color} from "@/app/data/color";
 import {Colors} from "@/configs/colorConfigs";
+import {useRouter} from "next/navigation";
 
 export default function Host() {
+
+    const router = useRouter();
 
     const [hexes, setHexes] = useState<HexInfo[]>([])
     const [seed, setSeed] = useState(Math.random())
@@ -87,6 +90,11 @@ export default function Host() {
         }
     }
 
+    async function goBack() {
+        await cancel();
+        router.push("/");
+    }
+
     useEffect(() => {
         regenerateMap()
         setGameUUID(uuid())
@@ -99,6 +107,11 @@ export default function Host() {
                     <HexGrid hexes={hexes} />
                 </div>
             </div>
+            <button
+                onClick={() => goBack()}
+                className={"z-50 cursor-pointer bg-gray-800 text-lg p-2 font-bold text-white flex flex-row items-center justify-center absolute top-0 left-0 m-2 rounded-md"}>
+                Go Back
+            </button>
             {!queueOpen ?
                 <div className={"absolute top-0 left-1/2 transform -translate-x-1/2 mt-6 flex flex-row items-center justify-center w-full"}>
                     <p className={"bg-gray-800 text-white px-10 py-6"}>Your Name</p>
@@ -121,7 +134,7 @@ export default function Host() {
                     <GameButton onClick={cancel} buttonText="Cancel"/>}
             </div>
             {queueOpen &&
-                <div className={"absolute top-0 left-0"}>
+                <div className={"absolute top-0 left-0 mt-12"}>
                     <UserDisplay name="Johnny Dozer" color={Colors.RED} mascot={Mascots.BISHOP} host={true} />
                     <UserDisplay name="Ricky Cook" color={Colors.BLUE} mascot={Mascots.CLUB} host={false} />
                     <UserDisplay name="Garrett Arranda" color={Colors.GREEN} mascot={Mascots.KNIGHT} host={false} />
