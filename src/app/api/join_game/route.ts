@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import clientPromise from "../../../../lib/mongodb";
+import {DATABASE_NAME} from "@/configs/mongodbConfigs";
 
 export async function POST(req: Request) {
     try {
@@ -7,7 +8,7 @@ export async function POST(req: Request) {
 
         // Connect to the database
         await clientPromise.connect();
-        const db = clientPromise.db('hexgame');
+        const db = clientPromise.db(DATABASE_NAME);
         const gamesCollection = db.collection('activeGames');
         const joinedGame = await gamesCollection.findOne({gameJoinCode: gameJoinCode});
         if (!joinedGame) throw new Error('Invalid game joinCode: ' + gameJoinCode);

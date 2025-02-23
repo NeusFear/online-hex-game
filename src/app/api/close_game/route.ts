@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import clientPromise from "../../../../lib/mongodb";
+import {DATABASE_NAME} from "@/configs/mongodbConfigs";
 
 export async function POST(req: Request) {
     try {
@@ -10,7 +11,7 @@ export async function POST(req: Request) {
         const usersCollectionName = `users-${gameUUID}`;
 
         await clientPromise.connect();
-        const db = clientPromise.db('hexgame');
+        const db = clientPromise.db(DATABASE_NAME);
         const activeGamesCollection = db.collection("activeGames");
         const result1 = await activeGamesCollection.findOneAndDelete({ gameID: gameUUID });
         const result2 = await db.dropCollection(usersCollectionName);

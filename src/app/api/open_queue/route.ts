@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import clientPromise from "../../../../lib/mongodb";
 import {GameInfo} from "@/app/data/gameInfo";
 import {generateRandomCode} from "@/util/randomCodeGenerator";
+import {DATABASE_NAME} from "@/configs/mongodbConfigs";
 
 export async function POST(req: Request) {
     try {
@@ -9,7 +10,7 @@ export async function POST(req: Request) {
 
         // Connect to the database
         await clientPromise.connect();
-        const db = clientPromise.db('hexgame');
+        const db = clientPromise.db(DATABASE_NAME);
 
         //Generate game join code
         const collections = await db.listCollections().toArray();
